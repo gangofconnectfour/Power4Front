@@ -6,6 +6,9 @@ import {applyMiddleware, createStore} from 'redux'
 import userReducer from './reducers/userReducer'
 import {sign_up,sign_in,sign_out} from "./actions/userActions";
 import Root from "./components/Root";
+import "../scss/app.scss"
+import "sockjs-client"
+
 const loggerMiddleware = createLogger()
 const store = createStore(
     userReducer,
