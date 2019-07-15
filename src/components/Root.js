@@ -15,7 +15,6 @@ const Root = ({ store }) =>  (
             <App>
                 <Route exact path="/" component={Index}/>
                 <Route exact path="/sign_in" component={SignIn}/>
-                <Route exact path={"/game"} component={Game} />
             </App>
         </Router>
     </Provider>
