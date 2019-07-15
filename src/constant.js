@@ -1,6 +1,7 @@
 
 
 export const initialState = {
+    board:[],
     user:{
         email: '',
         nickname: '',

@@ -1,7 +1,37 @@
 @import "../node_modules/foundation-sites/dist/css/foundation.min.css";
 
 
-body {
+body{
 
-  font-size: 20px;
+  font-size: 21px;
+}
+.main{
+  margin-top: 1rem;
+}
+
+.board{
+  padding:0.5rem;
+  display: grid;
+  grid-template-columns: repeat(7,70px);
+  grid-template-rows: repeat(6,70px);
+  justify-content: center;
+}
+
+
+.board-cell{
+  display: flex;
+  padding:0.5rem;
+  background: blue;
+}
+
+.pawn{
+  border-radius:9999px;
+  background:white;
+
+  &.yellow,&.highlighted{
+    background:yellow;
+  }
+  &.red{
+    background:red;
+  }
 }

@@ -22,7 +22,7 @@ module.exports = {
         historyApiFallback: true,
         contentBase: ["./public","./assets"],
         hot: true,
-        port: 3000
+        port: 3001
     },
     module: {
         rules: [
@@ -51,7 +51,7 @@ module.exports = {
             filename: devMode ? "stylesheets/app.css" : "stylesheets/app.min.css"
         })
     ],
-    watch: true,
+    watch: devMode,
     watchOptions: {
         ignored: /node_modules/,
         aggregateTimeout: 1000
