@@ -35,13 +35,16 @@ export function sign_in(payload){
             } ,
             body:payload
         })
+        .then(response => {
+            if(response.ok)
+                return response.json()
+            throw response.text()
+        })
         .then(
-            response => response.json(),
-            error => console.error("failed signin",error)
+            json => dispatch(receive_sign_in(json))
         )
-        .then(json=> {
-            return (!json.error) ? dispatch(receive_sign_in(json)) : null
-            }
+        .catch(
+            error => console.error("failed signin",error)
         )
     }
 }
@@ -71,8 +74,13 @@ export function sign_out(token){
                 "JWT":token
             }
         })
+            .then(response => {
+                if(response.ok)
+                    return response.json()
+                throw response.text()
+            })
             .then(
-                response => dispatch(receive_sign_out(response.json()))
+                json => dispatch(receive_sign_out(json))
             )
             .catch(error=> console.error(error)
             )
@@ -106,8 +114,13 @@ export function sign_up(payload){
             } ,
             body:payload
         })
+            .then(response => {
+                if(response.ok)
+                    return response.json()
+                throw response.text()
+            })
             .then(
-                response => dispatch(receive_sign_up(response.json())),
+                json => dispatch(receive_sign_up(json)),
             )
             .catch(error=> console.error(error)
             )
