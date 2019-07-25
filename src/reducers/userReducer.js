@@ -28,7 +28,7 @@ function sign_up(state = {}, action){
     })
 }
 
-function app(state = {}, action){
+function app(state = initialState, action){
     switch (action.type) {
         case RECEIVE_SIGN_IN:
             return sign_in(state, action)

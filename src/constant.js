@@ -8,12 +8,12 @@ export const initialState = {
         password: ''
     },
     auth:{
-        jwt: ''
+        token: '1'
     }
 }
 
 const PROTOCOL = "http"
-const PORT = 3000
-const DOMAIN = "localhost"
-const ROOT_PATH = "/"
+const PORT = 80
+const DOMAIN = "alexandre.lairan.fr"
+const ROOT_PATH = "/api/"
 export const API_ROOT = `${PROTOCOL}://${DOMAIN}:${PORT}${ROOT_PATH}`
