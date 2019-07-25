@@ -15,65 +15,87 @@ class Game extends Component{
         this.onMessageReceive = this.onMessageReceive.bind(this)
         this.sendMessage = this.sendMessage.bind(this)
         this.conditionVictory = this.conditionVictory.bind(this)
+        this.leftHoz = this.leftHoz.bind(this)
+        this.rightHoz = this.rightHoz.bind(this)
+        this.diagonalLeftTop = this.diagonalLeftTop.bind(this)
+        this.diagonalLeftBot = this.diagonalLeftBot.bind(this)
+        this.diagonalRightTop = this.diagonalRightTop.bind(this)
+        this.diagonalRightBot = this.diagonalRightBot.bind(this)
 
         const board = Array(42)
         for(var i=0;i<board.length;i++) board[i]={pawn:0,highlighted:false}
         this.state = {board:[...board],highlightedCell:false,yourTurn:true}
     }
 
+    componentDidMount(){
 
-    leftHoz(board, row, column, pawnOwner, repeat){
-        if(repeat > 6) return repeat
-        if(column < 0) return repeat
-        if(board[row*column].pawn !== pawnOwner || board[row*column].pawn === 0) return repeat
-        return this.leftHoz(board, row, column-1, pawnOwner, repeat+1)
     }
 
-    rightHoz(board, row, column, pawnOwner, repeat){
-        if(repeat > 6) return repeat
-        if(column > 6) return repeat
-        if(board[row*column].pawn !== pawnOwner || board[row*column].pawn === 0) return repeat
-        return this.rightHoz(board, row, column+1, pawnOwner, repeat+1)
+    leftHoz(board, row, column, pawnOwner){
+        const targetCell = row*7+column
+        // console.log(typeof row, typeof column);
+        if(row<0 || column<0 || row>=6 || column >= 7) return 0
+        console.log(`leftHoz: ${row}x7+${column} = ${targetCell}`, board[targetCell]);
+        if(board[targetCell].pawn === pawnOwner)
+            return this.rightHoz(board, row, column-1, pawnOwner) + 1
+        return 0
+
+
     }
 
-    diagonalLeftTop(board, row, column, pawnOwner, repeat){
-        if(repeat > 6) return repeat
-        if(column > 6 || row < 0) return repeat
-        if(board[row*column].pawn !== pawnOwner || board[row*column].pawn === 0) return repeat
-        return this.diagonalLeftTop(board, row-1, column+1, pawnOwner, repeat+1)
+    rightHoz(board, row, column, pawnOwner){
+
+        const targetCell = row*7+column
+        // console.log(typeof row, typeof column);
+        if(row<0 || column<0 || row>=6 || column >= 7) return 0
+        console.log(`rightHoz: ${row}x7 + ${column} = ${targetCell}`,board[targetCell]);
+        if(board[targetCell].pawn === pawnOwner)
+            return this.rightHoz(board, row, column+1, pawnOwner) + 1
+        return 0
     }
 
-    diagonalLeftBot(board, row, column, pawnOwner, repeat){
-        if(repeat > 6) return repeat
-        if(column < 0 || row > 5) return repeat
-        if(board[row*column].pawn !== pawnOwner || board[row*column].pawn === 0) return repeat
-        return this.diagonalLeftBot(board, row+1, column-1, pawnOwner, repeat+1)
+    diagonalLeftTop(board, row, column, pawnOwner){
+        const targetCell = row*6+column
+        if(row<0 || column<0 || !board[targetCell]) return 0
+        console.log("diagonalLeftTop:", row, column, board[targetCell])
+        if(board[targetCell].pawn === pawnOwner) return this.diagonalLeftTop(board, row-1, column+1, pawnOwner) + 1
+        return 0
     }
 
-    diagonalRightTop(board, row, column, pawnOwner, repeat){
-        if(repeat > 6) return repeat
-        if(column < 0 || row > 5) return repeat
-        if(board[row*column].pawn !== pawnOwner || board[row*column].pawn === 0) return repeat
-        return this.diagonalRightTop(board, row+1, column-1, pawnOwner, repeat+1)
+    diagonalLeftBot(board, row, column, pawnOwner){
+        const targetCell = row*6+column
+        if(row<0 || column<0 || !board[targetCell]) return 0
+        console.log("diagonalLeftBot:", row, column, board[targetCell])
+        if(board[targetCell].pawn === pawnOwner) return this.diagonalLeftBot(board, row+1, column-1, pawnOwner) + 1
+        return 0
     }
 
-    diagonalRightBot(board, row, column, pawnOwner, repeat){
-        if(repeat > 6) return repeat
-        if(column > 6 || row < 0) return repeat
-        if(board[row*column].pawn !== pawnOwner || board[row*column].pawn === 0) return repeat
-        console.log("diagrightbot",repeat);
-        return this.diagonalRightBot(board, row-1, column+1, pawnOwner, repeat+1)
+    diagonalRightTop(board, row, column, pawnOwner){
+        const targetCell = row*6+column
+        if(row<0 || column<0 || !board[targetCell]) return 0
+        console.log("diagonalRightTop:", row, column, board[targetCell])
+        if(board[targetCell].pawn === pawnOwner) return this.diagonalRightTop(board, row+1, column-1, pawnOwner) + 1
+        return 0
+    }
+
+    diagonalRightBot(board, row, column, pawnOwner){
+        const targetCell = row*6+column
+        if(row<0 || column<0 || targetCell > 41 || !board[targetCell]) return 0
+        console.log("diagonalRightBot:", row, column, board[targetCell])
+        if(board[targetCell].pawn === pawnOwner) return this.diagonalRightBot(board, row-1, column+1, pawnOwner) + 1
+        return 0
     }
 
 
-    conditionVictory(board, row, column, pawnOwner){
+    conditionVictory(board, targetCell, pawnOwner){
         let currentStreak = 1
-        console.log(board);
-        const hoz = this.leftHoz(board, row, column, pawnOwner, 0) + this.rightHoz(board, row, column, pawnOwner, 0)
-        const diagLeft = this.diagonalLeftTop(board, row, column, pawnOwner, 0) + this.diagonalLeftBot(board, row, column, pawnOwner, 0)
-        const diagRight = this.diagonalRightTop(board, row, column, pawnOwner, 0) + this.diagonalRightBot(board, row, column, pawnOwner, 0)
+        const [row, column] = [Math.floor(targetCell/7), targetCell%7]
+        console.log(board, row, column, targetCell);
+        const hoz = this.leftHoz(board, row, column-1, pawnOwner) + this.rightHoz(board, row, column+1, pawnOwner)
+        // const diagLeft = this.diagonalLeftTop(board, row-1, column+1, pawnOwner) + this.diagonalLeftBot(board, row+1, column-1, pawnOwner)
+        // const diagRight = this.diagonalRightTop(board, row+1, column-1, pawnOwner) + this.diagonalRightBot(board, row-1, column+1, pawnOwner)
 
-        console.log(hoz, diagLeft, diagRight);
+        console.log(hoz);
     }
 
     hoverColumn(column){
@@ -97,34 +119,47 @@ class Game extends Component{
         this.setState({board:newBoard,highlightedColumn:column,highlightedCell:targetCell})
     }
 
-    clickColumn(column){
-        if(!this.state.yourTurn) return
+    findFreeRow(column){
         const walkColumn = this.state.board.filter((cell,index) => index%7===column).reverse()
-        const targetRow = walkColumn.findIndex(cell => {
+        return walkColumn.findIndex(cell => {
             return cell.pawn === 0
         }) % 7
-        if(targetRow === -1) return
+    }
 
-        const targetCell = 35-targetRow*7+column
+    clickColumn(column){
+        if(!this.state.yourTurn) return
+        let targetColumn = column
+        let targetRow = this.findFreeRow(targetColumn)
+        if(targetRow===-1) return
+
+        const targetCell = 35-targetRow*7+targetColumn
         const newBoard = [...this.state.board]
+        // newBoard[targetCell].pawn = this.state.yourTurn ? 1 : 2
         newBoard[targetCell].pawn = 1
         if(this.state.highlightedCell)
             newBoard[this.state.highlightedCell].highlighted = false
 
 
         this.sendMessage(newBoard.map(n => n.pawn))
-        this.conditionVictory(newBoard, targetRow, column, 1)
         this.setState({board:newBoard,highlightedColumn:false,highlightedCell:false,yourTurn:false})
+        // this.setState({board:newBoard,highlightedColumn:false,highlightedCell:false,yourTurn:!this.state.yourTurn})
+        // this.conditionVictory(this.state.board, targetCell, this.state.board[targetCell].pawn)
     }
 
     onMessageReceive(response, topic) {
-        const column = JSON.parse(response.body).hit
+        let column = response.body.hit
 
-        const walkColumn = this.state.board.filter((cell,index) => index%7===column).reverse()
-        const targetRow = walkColumn.findIndex(cell => {
-            return cell.pawn === 0
-        }) % 7
-        if(targetRow === -1) return
+        let targetRow = this.findFreeRow(column)
+        if(targetRow===-1) {
+            const availableColumn = []
+            for (var i = 0; i < 7; i++) {
+                const tryColumn = this.findFreeRow(i)
+                if (tryColumn !== -1) availableColumn.push(i)
+            }
+            if(availableColumn.length===0) return
+            column = availableColumn[Math.round(Math.random()*6)]
+            targetRow = this.findFreeRow(column)
+        }
 
         const targetCell = 35-targetRow*7+column
         const newBoard = [...this.state.board]
@@ -132,14 +167,15 @@ class Game extends Component{
         if(this.state.highlightedCell)
             newBoard[this.state.highlightedCell].highlighted = false
 
-        this.conditionVictory(newBoard, targetRow, column, 2)
+        // this.conditionVictory(newBoard, targetRow, column, 2)
         this.setState({board:newBoard,highlightedColumn:false,highlightedCell:false,yourTurn:true})
 
     }
 
     sendMessage (board) {
         try {
-            this.clientRef.sendMessage("/app/hello", JSON.stringify(board));
+            console.log("before send",board);
+            this.clientRef.sendMessage("/app/hello", JSON.stringify({input: board}));
             console.log("oui");
             return true;
         } catch(e) {
