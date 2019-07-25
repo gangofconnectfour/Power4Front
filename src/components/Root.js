@@ -20,6 +20,7 @@ const Root = ({ store }) =>  (
                 <Route exact path="/sign_up" component={SignUp}/>
                 <Route exact path="/profile" component={Profile}/>
                 <Route exact path={"/game"} component={Game} />
+
             </App>
         </Router>
     </Provider>
