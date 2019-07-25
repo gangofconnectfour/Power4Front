@@ -13,7 +13,7 @@ export const initialState = {
 }
 
 const PROTOCOL = "http"
-const PORT = 8090
-const DOMAIN = "localhost"
+const PORT = 80
+const DOMAIN = "alexandre.lairan.fr"
 const ROOT_PATH = "/api/"
 export const API_ROOT = `${PROTOCOL}://${DOMAIN}:${PORT}${ROOT_PATH}`

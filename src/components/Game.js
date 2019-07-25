@@ -197,7 +197,7 @@ class Game extends Component{
                     )
                 }
                 </div>
-                <SockJsClient url='http://localhost:8090/rtc' topics={['/topic/greetings']}
+                <SockJsClient url='http://alexandre.lairan.fr/rtc' topics={['/topic/greetings']}
                               onMessage={ this.onMessageReceive } ref={ (client) => { this.clientRef = client }}
                               onConnect={ () => { console.log("connected"); this.setState({ clientConnected: true }) } }
                               onDisconnect={ () => { console.log("disconnected"); this.setState({ clientConnected: false }) } }
