@@ -14,6 +14,6 @@ export const initialState = {
 
 const PROTOCOL = "http"
 const PORT = 80
-const DOMAIN = "alexandre.lairan.fr"
+const DOMAIN = "51.159.26.254"
 const ROOT_PATH = "/api/"
 export const API_ROOT = `${PROTOCOL}://${DOMAIN}:${PORT}${ROOT_PATH}`
